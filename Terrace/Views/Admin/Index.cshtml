@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<h2>用户管理</h2>
+<br />
+<br />
+
+<div class="row">
+    <div class="col-md-2 col-md-offset-2">
+        @Html.ActionLink("学生管理", "AlterStudent", "", new { @class = "btn btn-primary btn-lg" })
+    </div>
+    <div class="col-md-2 col-md-offset-2">
+        @Html.ActionLink("教师管理", "AlterTeacher", "", new { @class = "btn btn-primary btn-lg" })
+    </div>
+</div>

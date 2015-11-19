@@ -1,0 +1,116 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Terrace.Models.Student>
+@{
+    ViewBag.Title = "AlterStudent";
+}
+<h2>管理学生</h2>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@section scripts
+{
+    @Scripts.Render("~/budles/jquerval")
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")"></script>
+}
+@{
+    var ajaxOption = new AjaxOptions()
+    {
+        Confirm = "您确定删除么？",
+        HttpMethod = "Post",
+        OnSuccess = "DeleteComplete"
+    };
+}
+<script>
+    $
+</script>
+<script type="text/javascript">
+    //var jsonobject = {
+    //    "name": "xuweilu",
+    //    "street": "hangzhou"
+    //};
+    //$.post("", function (data) {
+    //    $("#"+data.deletedid).remove();
+    //})
+    //$.ajax({
+    //    url: "",
+    //    type: "post",
+    //    success: function (data, text) {
+    //        data.deletedid
+    //    }
+    //})
+    //$(document).ready(function () {
+    //    var obj = $.parseJSON('{"deleteid","id"}')
+    //    $.parseJSON(deletedid)
+    //    $("tr:eq(1)")
+    //    $("")
+    //})
+    //$(function () {
+    //    $("button").click(function () {
+    //        $("#div1").remove();
+    //    })
+    //})
+    
+    //$(".btn").click(function () {
+    //    $("tr").remove();
+    //})
+    //$(function DeleteComplete() {
+    //    $.post("", function (data) {
+    //        $("tr#" + data.deletedid).remove();
+    //    })
+    //})
+
+    @*function DeleteComplete() {
+        $.post("", function (data) {
+            $("tr#" + data.deletedid).remove();
+            $.post("@Url.Action("DeleteStudent")")
+    window.location.reload();
+        }*@
+    function DeleteComplete() {
+        window.location.reload();
+    }
+</script>
+<br />
+<h3>学生列表</h3>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().MemberRole)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().RegisterOn)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="@item.Id">
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberRole)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegisterOn)
+            </td>
+            <td>                
+                @Ajax.ActionLink("删除", "DeleteStudent", new { id = item.Id }, ajaxOption, new { @class = "btn btn-danger btn-sm" })
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="row">
+    <div class="col-md-offset-4">
+        @Html.PagedListPager(Model, page => Url.Action("AlterStudent", new { page }))
+    </div>
+</div>

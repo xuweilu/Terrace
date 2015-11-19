@@ -1,0 +1,69 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList <Terrace.Models.Paper>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>试卷管理</h2>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@section scripts
+{
+    @Scripts.Render("~/budles/jquerval")
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")"></script>
+}
+@{
+    var ajaxOption = new AjaxOptions()
+    {
+        Confirm = "您确定删除么？",
+        HttpMethod = "Post",
+        OnComplete = "DeleteComplete",
+    };
+}
+<script>
+    function DeleteComplete() {
+        window.location.reload();
+    }
+</script>
+<br />
+<h3>试卷列表</h3>
+<table class="table">
+    <tr>
+        <th>
+            试卷名称
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().EditOn)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EditOn)
+            </td>
+            <td>
+                @Html.ActionLink("编辑", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" }) |
+                @Ajax.ActionLink("删除", "Delete", new { id = item.Id }, ajaxOption, new { @class = "btn btn-danger btn-sm" })
+            </td>
+        </tr>
+    }
+</table>
+@Html.ActionLink("新建", "Create","", new { @class = "btn btn-primary btn-sm" })
+
+<div class="row">
+    <div class="col-md-offset-4">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+    </div>
+</div>

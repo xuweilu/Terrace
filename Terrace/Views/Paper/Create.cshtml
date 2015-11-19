@@ -1,0 +1,265 @@
+﻿@model Terrace.Models.Paper
+@{
+    ViewBag.Title = "Create";
+}
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var tqSum = 1;  //判断题下标
+    var sqSum = 1;  //单选题下标
+    var mqSum = 1;  //多选题下标
+    var SingleAnswerId = ["选项A", "选项B", "选项C", "选项D"]
+    var MultipleAnswerId = ["选项A", "选项B", "选项C", "选项D", "选项E", "选项F", "选项G", "选项H", "选项I", "选项J", "选项K", "选项L", "选项M", "选项N", "选项O", "选项P", "选项Q", "选项R", "选项S", "选项T", "选项U", "选项V", "选项W", "选项X", "选项Y", "选项Z"];
+
+    //添加判断题
+    $(function () {
+        $('#createtq').click(function () {
+            var tqItem = $('#tq0').clone();
+            tqItem.attr('id', 'tq' + tqSum);
+            tqItem.children().find('textarea').attr('name', 'TrueOrFalseQuestions[' + tqSum + '].Content');
+            tqItem.children().find('span').attr('data-valmsg-for', 'TrueOrFalseQuestions[' + tqSum + '].Content');
+            tqItem.children().find('input').attr('name', 'TrueOrFalseQuestions[' + tqSum + '].Content');
+            $("#createtqpanel").before(tqItem);
+            tqSum++;
+        });
+    });
+
+    //添加单选题
+    $(function () {
+        $("#createsq").click(function () {
+            var sqItem = $("#sq0").clone();
+            sqItem.attr("id", "sq" + sqSum);
+
+            sqItem.children().find("textarea").eq(0).attr("name", "SingleQuestions[" + sqSum + "].Content");
+            sqItem.children().find("textarea").eq(1).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[0].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[0] + "内容");
+            sqItem.children().find("textarea").eq(2).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[1].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[1] + "内容");
+            sqItem.children().find("textarea").eq(3).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[2].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[2] + "内容");
+            sqItem.children().find("textarea").eq(4).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[3].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[3] + "内容");
+
+            sqItem.children().find("label").eq(1).text(SingleAnswerId[0]);
+            sqItem.children().find("label").eq(2).text(SingleAnswerId[1]);
+            sqItem.children().find("label").eq(3).text(SingleAnswerId[2]);
+            sqItem.children().find("label").eq(4).text(SingleAnswerId[3]);
+
+            sqItem.children().find("span").eq(0).attr("data-valmsg-for", "SingleQuestions[" + sqSum + "].Content");
+            sqItem.children().find("span").eq(1).attr("data-valmsg-for", "SingleQuestions[" + sqSum + "].SingleOptions[0].OptionProperty");
+            sqItem.children().find("span").eq(2).attr("data-valmsg-for", "SingleQuestions[" + sqSum + "].SingleOptions[1].OptionProperty");
+            sqItem.children().find("span").eq(3).attr("data-valmsg-for", "SingleQuestions[" + sqSum + "].SingleOptions[2].OptionProperty");
+            sqItem.children().find("span").eq(4).attr("data-valmsg-for", "SingleQuestions[" + sqSum + "].SingleOptions[3].OptionProperty");
+            sqItem.children().find("span").eq(5).attr("data-valmsg-for", "SingleQuestions[" + sqSum + "].Answer");
+
+            sqItem.children().find("select").attr("name", "SingleQuestions[" + sqSum + "].Answer");
+
+            $("#createsqpanel").before(sqItem);
+            sqSum++;
+        })
+    })
+
+    //添加多选题选项
+    $(function () {
+        $(".multiple-question-option-create").click(function () {
+            var opnum = $(this).closest(".multiple-question").children(".multiple-question-option").size();    //得到当前多选题选项的数目        
+            if (opnum > 24) { alert("错误，不能超过24个选项！") }
+            else
+            {
+                var oppreid = opnum - 1;                //得到当前元素前元素的id
+                var mqposition = $(this).closest(".multiple-question").attr("id").match(/\d+/)[0];    //得到当前多选题的id
+                var moitem = $("#0mqchoice0").clone();
+                moitem.attr("id",mqposition+"mqchoice" + opnum);
+                moitem.children("label").text(MultipleAnswerId[opnum]);
+                moitem.children().find("textarea").attr("name", "MultipleQuestions[" + mqposition + "].MultipleOptions[" + opnum + "].OptionProperty");
+                moitem.children().find("span").eq(0).attr("data-valmsg-for", "MultipleQuestions[" + mqposition + "].MultipleOptions[" + opnum + "].OptionProperty");
+                moitem.children().find("span").eq(1).attr("data-valmsg-for", "MultipleQuestions[" + mqposition + "].MultipleOptions[" + opnum + "].Answer");
+                moitem.children().find("input").attr("name", "MultipleQuestions[" + mqposition + "].MultipleOptions[" + opnum + "].Answer");
+                $("#"+mqposition+"mqchoice"+oppreid).after(moitem);
+            }
+        })
+    })
+
+    //添加多选题
+    $(function () {
+        $("#createmq").click(function () {
+            var mqContentItem = $("#0mqcontent").clone();
+            var mqChoiceItem = $("#0mqchoice0").clone();
+            var mqPanelItem = $("#createmopanel").clone(true);
+            var mqSum = $(".multiple-question").size();     //得到目前所有多选题的数目
+            var form = $("<div></div>").addClass("form-horizontal multiple-question").attr("id", mqSum + "mq").append($("<br>"));
+            mqContentItem.children().find("textarea").attr("name", "MultipleQuestions[" + mqSum + "].Content");
+            mqContentItem.children().find("span").attr("data-valmsg-for", "MultipleQuestions[" + mqSum + "].Content");
+            mqContentItem.removeAttr("id");
+
+            mqChoiceItem.attr("id", mqSum + "mqchoice0");
+            mqChoiceItem.children().find("textarea").attr("name", "MultipleQuestions[" + mqSum + "].MultipleOptions[0].OptionProperty");
+            mqChoiceItem.children().find("span").eq(0).attr("data-valmsg-for", "MultipleQuestions[" + mqSum + "].MultipleOptions[0].OptionProperty");
+            mqChoiceItem.children().find("span").eq(1).attr("data-valmsg-for", "MultipleQuestions[" + mqSum + "].MultipleOptions[0].Answer");
+            mqChoiceItem.children().find("input").attr("name", "MultipleQuestions[" + mqSum + "].MultipleOptions[0].Answer");
+
+            mqPanelItem.children().removeAttr("id");
+            mqPanelItem.children().find("input").removeAttr("id");
+
+            var finishform = form.append(mqContentItem).append(mqChoiceItem).append(mqPanelItem);
+            $("#createmqpanel").before(finishform);
+
+        })
+    })
+
+</script>
+
+<h2>新建试卷</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <hr />
+    <h4 id="tq">判断题</h4>
+    <div class="form-horizontal trueorfalse-quesion" id="tq0">
+        <br />
+        <div class="form-group trueorfalse-quesion-content">
+            @Html.LabelFor(model => model.TrueOrFalseQuestions[0].Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.TrueOrFalseQuestions[0].Content, 3, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入题目内容" })
+                @Html.ValidationMessageFor(model => model.TrueOrFalseQuestions[0].Content, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group trueorfalse-quesion-answer">
+            @Html.LabelFor(model => model.TrueOrFalseQuestions[0].Answer, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TrueOrFalseQuestions[0].Answer)
+                @Html.ValidationMessageFor(model => model.TrueOrFalseQuestions[0].Answer, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal" id="createtqpanel">
+        <div class="form-group">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                <input type="button" id="createtq" value="添加判断题" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
+    <hr />
+    <h4 id="sq">单选题</h4>
+    <div class="form-horizontal single-question" id="sq0">
+        <br />
+        <div class="form-group single-question-content">
+            @Html.LabelFor(model => model.SingleQuestions[0].Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.SingleQuestions[0].Content, 3, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入题目内容" })
+                @Html.ValidationMessageFor(model => model.SingleQuestions[0].Content, "", new { @class = "text-danger" })
+            </div>    
+        </div>
+        <div class="form-group single-question-option">
+            <label class="control-label col-md-2">选项A</label>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.SingleQuestions[0].SingleOptions[0].OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入选项A内容" })
+                @Html.ValidationMessageFor(model => model.SingleQuestions[0].SingleOptions[0].OptionProperty, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group single-question-option">
+            <label class="control-label col-md-2">选项B</label>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.SingleQuestions[0].SingleOptions[1].OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入选项B内容" })
+                @Html.ValidationMessageFor(model => model.SingleQuestions[0].SingleOptions[1].OptionProperty, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group single-question-option">
+            <label class="control-label col-md-2">选项C</label>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.SingleQuestions[0].SingleOptions[2].OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入选项C内容" })
+                @Html.ValidationMessageFor(model => model.SingleQuestions[0].SingleOptions[2].OptionProperty, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group single-question-option">
+            <label class="control-label col-md-2">选项D</label>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.SingleQuestions[0].SingleOptions[3].OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入选项D内容" })
+                @Html.ValidationMessageFor(model => model.SingleQuestions[0].SingleOptions[3].OptionProperty, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group single-question-answer">
+            @Html.LabelFor(model => model.SingleQuestions[0].Answer, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.SingleQuestions[0].Answer, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SingleQuestions[0].Answer, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-horizontal" id="createsqpanel">
+        <div class="form-group">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                <input type="button" id="createsq" value="添加单选题" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
+
+    <hr />
+    <h4 id="mq">多选题</h4>
+    <div class="form-horizontal multiple-question" id="0mq">
+        <br />        
+        <div class="form-group multiple-question-content" id="0mqcontent">
+            @Html.LabelFor(model => model.MultipleQuestions[0].Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.TextAreaFor(model => model.MultipleQuestions[0].Content, 3, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入题目内容" })
+                @Html.ValidationMessageFor(model => model.MultipleQuestions[0].Content, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+
+        <div class="form-group multiple-question-option" id="0mqchoice0">
+            <label class="control-label col-md-2">选项A</label>
+            <div class="col-md-8">
+                @Html.TextAreaFor(model => model.MultipleQuestions[0].MultipleOptions[0].OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入选项内容" })
+                @Html.ValidationMessageFor(model => model.MultipleQuestions[0].MultipleOptions[0].OptionProperty, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                该选项是否正确？
+                @Html.EditorFor(model => model.MultipleQuestions[0].MultipleOptions[0].Answer)
+                @Html.ValidationMessageFor(model => model.MultipleQuestions[0].MultipleOptions[0].Answer, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="createmopanel">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                <input type="button" id="createmo" value="添加选项" class="btn btn-sm btn-warning multiple-question-option-create" />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal" id="createmqpanel">
+        <div class="form-group">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                <input type="button" id="createmq" value="添加多选题" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-10 col-md-12">
+            <input type="submit" value="确定" class="btn btn-lg btn-success" />
+        </div>
+    </div>
+}
+
+
+<div>
+    @Html.ActionLink("回到列表", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

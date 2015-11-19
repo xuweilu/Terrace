@@ -1,0 +1,164 @@
+﻿@model Terrace.Models.Paper
+@{
+    ViewBag.Title = "Edit";
+}
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+
+<h2>修改试卷</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @{int tSum = Model.TrueOrFalseQuestions.Count; }
+        <hr />
+        <h4 id="tq">判断题</h4>
+        @for (int i = 0; i < tSum; i++)
+        {
+            <div class="form-horizontal trueorfalse-quesion">
+                <br />
+                <div class="form-group trueorfalse-quesion-content">
+                    @Html.LabelFor(model => model.TrueOrFalseQuestions[i].Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.TrueOrFalseQuestions[i].Content, 3, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入题目内容" })
+                        @Html.ValidationMessageFor(model => model.TrueOrFalseQuestions[i].Content, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group trueorfalse-quesion-answer">
+                    @Html.LabelFor(model => model.TrueOrFalseQuestions[i].Answer, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.TrueOrFalseQuestions[i].Answer)
+                        @Html.ValidationMessageFor(model => model.TrueOrFalseQuestions[i].Answer, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        }
+        @{int sSum = Model.SingleQuestions.Count; }
+        <hr />
+        <h4 id="sq">单选题</h4>
+        @for (int i = 0; i < sSum; i++)
+        {
+            <div class="form-horizontal single-question">
+                <br />
+                <div class="form-group single-question-content">
+                    @Html.LabelFor(model => model.SingleQuestions[i].Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.SingleQuestions[i].Content, 3, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入题目内容" })
+                        @Html.ValidationMessageFor(model => model.SingleQuestions[i].Content, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group single-question-option">
+                    <label class="control-label col-md-2">选项A</label>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.SingleQuestions[i].SingleOptions[0].OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入选项A内容" })
+                        @Html.ValidationMessageFor(model => model.SingleQuestions[i].SingleOptions[0].OptionProperty, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group single-question-option">
+                    <label class="control-label col-md-2">选项B</label>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.SingleQuestions[i].SingleOptions[1].OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入选项B内容" })
+                        @Html.ValidationMessageFor(model => model.SingleQuestions[i].SingleOptions[1].OptionProperty, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group single-question-option">
+                    <label class="control-label col-md-2">选项C</label>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.SingleQuestions[i].SingleOptions[2].OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入选项C内容" })
+                        @Html.ValidationMessageFor(model => model.SingleQuestions[i].SingleOptions[2].OptionProperty, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group single-question-option">
+                    <label class="control-label col-md-2">选项D</label>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.SingleQuestions[i].SingleOptions[3].OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入选项D内容" })
+                        @Html.ValidationMessageFor(model => model.SingleQuestions[i].SingleOptions[3].OptionProperty, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group single-question-answer">
+                    @Html.LabelFor(model => model.SingleQuestions[i].Answer, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EnumDropDownListFor(model => model.SingleQuestions[i].Answer, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SingleQuestions[i].Answer, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        }
+
+        @{int mSum = Model.MultipleQuestions.Count; }
+        <hr />
+        <h4 id="mq">多选题</h4>
+        @for (int i = 0; i < mSum; i++)
+        {
+            <div class="form-horizontal multiple-question">
+                <br />
+                <div class="form-group multiple-question-content">
+                    @Html.LabelFor(model => model.MultipleQuestions[i].Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(model => model.MultipleQuestions[i].Content, 3, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入题目内容" })
+                        @Html.ValidationMessageFor(model => model.MultipleQuestions[i].Content, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                </div>
+
+                @{
+                    string[] MultipleOptions = { "选项A", "选项B", "选项C", "选项D", "选项E", "选项F", "选项G", "选项H", "选项I", "选项J", "选项K", "选项L", "选项M", "选项N", "选项O", "选项P", "选项Q", "选项R", "选项S", "选项T", "选项U", "选项V", "选项W", "选项X", "选项Y", "选项Z" };
+                    int moSum = Model.MultipleQuestions[i].MultipleOptions.Count;
+                    }
+                @for (int n = 0; n < moSum; n++)
+                {
+                    <div class="form-group multiple-question-option">
+                        @*@Html.LabelFor(model => model.MultipleQuestions[i].MultipleOptions[n].OptionId, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <label class="control-label col-md-2">@MultipleOptions[n]</label>
+                        <div class="col-md-8">
+                            @Html.TextAreaFor(model => model.MultipleQuestions[i].MultipleOptions[n].OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入选项内容" })
+                            @Html.ValidationMessageFor(model => model.MultipleQuestions[i].MultipleOptions[n].OptionProperty, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-2">
+                            该选项是否正确？
+                            @Html.EditorFor(model => model.MultipleQuestions[i].MultipleOptions[n].Answer)
+                            @Html.ValidationMessageFor(model => model.MultipleQuestions[i].MultipleOptions[n].Answer, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        @*@foreach (var MultipleOption in Model.MultipleOptions)
+            {
+                <div class="form-group">
+                    <label class="control-label col-md-2">@Html.DisplayFor(modelItem => item.MultipleOptionNum)</label>
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(modelItem => MultipleOption.OptionProperty, 1, 10, htmlAttributes: new { @class = "form-control", placeholder = "在这里输入题目内容" })
+                        @Html.ValidationMessageFor(modelItem => MultipleOption.OptionProperty, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.EditorFor(modelItem => MultipleOption.Answer)
+                    </div>
+                </div>
+            }*@
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="保存" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
+
+
+
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
