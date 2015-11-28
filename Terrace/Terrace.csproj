@@ -176,6 +176,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ExamController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaperController.cs" />
     <Compile Include="DataAccess\TerraceMaps.cs" />
@@ -278,9 +279,11 @@
     <Content Include="Views\Paper\Index.cshtml" />
     <Content Include="Views\Paper\Create.cshtml" />
     <Content Include="Views\Paper\Edit.cshtml" />
+    <Content Include="Views\Paper\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Exam\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

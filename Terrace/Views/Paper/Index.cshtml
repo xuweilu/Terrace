@@ -1,6 +1,6 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
-@model IPagedList <Terrace.Models.Paper>
+@model IPagedList<Terrace.Models.Paper>
 @{
     ViewBag.Title = "Index";
 }
@@ -39,6 +39,7 @@
             @Html.DisplayNameFor(model => model.FirstOrDefault().EditOn)
         </th>
         <th></th>
+        <th></th>
     </tr>
 
     @foreach (var item in Model)
@@ -54,16 +55,40 @@
                 @Html.DisplayFor(modelItem => item.EditOn)
             </td>
             <td>
+                <div data-toggle="modal" data-target="#myModal">
+                    @Ajax.ActionLink("详细", "Detail", new { id = item.Id }, new AjaxOptions { UpdateTargetId = "question" }, new { role = "button", @class = "btn btn-info btn-sm" })
+                </div>
+            </td>
+            <td>
+                @*<a type="button" class="btn btn-primary" href="@Url.Action("Edit",new { id = item.Id})">
+                        <span class="glyphicon glyphicon-edit"></span> 编辑
+                    </a> |*@
                 @Html.ActionLink("编辑", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" }) |
                 @Ajax.ActionLink("删除", "Delete", new { id = item.Id }, ajaxOption, new { @class = "btn btn-danger btn-sm" })
             </td>
         </tr>
     }
 </table>
-@Html.ActionLink("新建", "Create","", new { @class = "btn btn-primary btn-sm" })
+@Html.ActionLink("新建", "Create", "", new { @class = "btn btn-primary btn-sm" })
 
 <div class="row">
     <div class="col-md-offset-4">
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">详细内容</h4>
+            </div>
+            <div class="modal-body" id="question">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
     </div>
 </div>

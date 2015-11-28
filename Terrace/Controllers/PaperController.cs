@@ -98,13 +98,7 @@ namespace Terrace.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id,FormCollection formCollection)
         {
-            var oldpaper = db.Papers
-                .Include("TrueOrFalseQuestions")
-                .Include("SingleQuestions")
-                .Include("MultipleQuestions")
-                .Include("SingleQuestions.SingleOptions")
-                .Include("MultipleQuestions.MultipleOptions")
-                .FirstOrDefault(p => p.Id == id);
+            //取得要修改的对象
             var newpaper = db.Papers
                 .Include("TrueOrFalseQuestions")
                 .Include("SingleQuestions")
@@ -112,10 +106,13 @@ namespace Terrace.Controllers
                 .Include("SingleQuestions.SingleOptions")
                 .Include("MultipleQuestions.MultipleOptions")
                 .FirstOrDefault(p => p.Id == id);
+
+            //通过窗口更新对象中如下字段
             if (TryUpdateModel(newpaper,"", new string[] { "TrueOrFalseQuestions", "SingleQuestions", "MultipleQuestions" }))
             {
+                var username = User.Identity.Name;      //得到当前登陆用户
+                newpaper.Author = db.Teachers.Where(t => t.Email == username).FirstOrDefault();     //修改作者为当前登录用户
                 newpaper.EditOn = DateTime.Now;
-                newpaper.Author = oldpaper.Author;
                 foreach (var nt in newpaper.TrueOrFalseQuestions)
                 {
                     nt.Type = QuestionType.判断题;
@@ -226,16 +223,24 @@ namespace Terrace.Controllers
             return RedirectToAction("Index");
         }
 
-        //public ActionResult AddTOrFQuestion(int id)
-        //{
-        //    //int num = id;
-        //    //ViewBag.tnum = id;
-        //    //ViewBag.tnum++;
-        //    ////return new EmptyResult();
-        //    int a = (int)(Session["CountT"]);
-        //    a++;
-        //    Session["CountT"] = a;
-        //    return PartialView(id);
-        //}
+        public ActionResult Detail(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Paper paper = db.Papers
+                .Include("TrueOrFalseQuestions")
+                .Include("SingleQuestions")
+                .Include("MultipleQuestions")
+                .Include("SingleQuestions.SingleOptions")
+                .Include("MultipleQuestions.MultipleOptions")
+                .FirstOrDefault(p => p.Id == id);
+            if (paper == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("Detail",paper);
+        }
     }
 }

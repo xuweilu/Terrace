@@ -1,0 +1,96 @@
+﻿@model Terrace.Models.Paper
+<h2>试卷@(Model.Id)</h2>
+<div>
+    <h4>判断题</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @foreach (var item in Model.TrueOrFalseQuestions)
+        {
+            <dt>
+                @Html.DisplayNameFor(modelItem => item.Content)
+            </dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.Content)
+            </dd>
+            <dt>
+                正确答案
+            </dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.Answer)
+            </dd>
+        }
+    </dl>
+    <hr />
+
+    <h4>单选题</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @foreach (var item in Model.SingleQuestions)
+        {
+            <dt>
+                @Html.DisplayNameFor(modelItem => item.Content)
+            </dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.Content)
+            </dd>
+            foreach (var opItem in item.SingleOptions)
+            {
+                <dt>
+                    @Html.DisplayFor(op => opItem.OptionId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(op => opItem.OptionProperty)
+                </dd>
+            }
+            <dt>
+                正确答案
+            </dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.Answer)
+            </dd>
+        }
+    </dl>
+    <hr />
+
+    <h4>多选题</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @foreach (var item in Model.MultipleQuestions)
+        {
+            <dt>
+                @Html.DisplayNameFor(modelItem => item.Content)
+            </dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.Content)
+            </dd>
+            foreach (var opItem in item.MultipleOptions)
+            {
+                <dt>
+                    @Html.DisplayFor(op => opItem.OptionId)
+
+                </dt>
+                <dd>
+                    @Html.DisplayFor(op => opItem.OptionProperty)
+                </dd>
+            }
+            foreach (var opItem in item.MultipleOptions)
+            {
+                if (opItem.Answer)
+                {
+                    <dt>
+                        正确答案
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(modelItem => opItem.OptionId)
+                    </dd>
+                }
+            }
+        }
+    </dl>
+
+</div>
+<div class="row">
+    <div class="col-md-2 col-md-offset-10">
+        @Html.ActionLink("编辑", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    </div>
+</div>
