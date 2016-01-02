@@ -29,7 +29,6 @@ namespace Terrace.Models
         [DisplayName("最近一次修改时间")]
         public DateTime EditOn { get; set; }
         public virtual Exam Exam { get; set; }
-
         [NotMapped]
         public EntityObjectState ObjectState
         {
@@ -40,7 +39,7 @@ namespace Terrace.Models
     public class Exam : IEntityObjectState
     {
         public int Id { get; set; }
-
+        [DisplayName("考试分数")]
         public int Score { get; set; }
         public virtual Student Student { get; set; }
         public virtual Paper Paper { get; set; }

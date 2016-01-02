@@ -55,7 +55,6 @@ namespace Terrace.DataAccess
         public SingleQuestionMap()
         {
             this.HasMany(s => s.SingleOptions).WithRequired(s => s.SingleQuestion).Map(s => s.MapKey("SingleQuesionId"));
-
         }
     }
     public class MultipleQuestionMap : EntityTypeConfiguration<MultipleQuestion>
