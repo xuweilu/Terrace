@@ -84,6 +84,7 @@ namespace Terrace.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            TempData["LastPostModel"] = paper;
             return RedirectToAction("Create");
         }
 
