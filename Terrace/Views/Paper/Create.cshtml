@@ -15,7 +15,7 @@
         $('#createtq').click(function addTrueOrFalse() {
             var tqItem = $('#tq0').clone();
             tqItem.attr('id', 'tq' + tqSum);
-            tqItem.children().find('textarea').attr('name', 'TrueOrFalseQuestions[' + tqSum + '].Content');
+            tqItem.children().find('textarea').attr('name', 'TrueOrFalseQuestions[' + tqSum + '].Content').val("");
             tqItem.children().find('span').attr('data-valmsg-for', 'TrueOrFalseQuestions[' + tqSum + '].Content');
             tqItem.children().find('input').attr('name', 'TrueOrFalseQuestions[' + tqSum + '].Content');
             $("#createtqpanel").before(tqItem);
@@ -27,11 +27,11 @@
             var sqItem = $("#sq0").clone();
             sqItem.attr("id", "sq" + sqSum);
 
-            sqItem.children().find("textarea").eq(0).attr("name", "SingleQuestions[" + sqSum + "].Content");
-            sqItem.children().find("textarea").eq(1).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[0].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[0] + "内容");
-            sqItem.children().find("textarea").eq(2).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[1].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[1] + "内容");
-            sqItem.children().find("textarea").eq(3).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[2].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[2] + "内容");
-            sqItem.children().find("textarea").eq(4).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[3].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[3] + "内容");
+            sqItem.children().find("textarea").eq(0).attr("name", "SingleQuestions[" + sqSum + "].Content").val("");
+            sqItem.children().find("textarea").eq(1).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[0].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[0] + "内容").val("");
+            sqItem.children().find("textarea").eq(2).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[1].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[1] + "内容").val("");
+            sqItem.children().find("textarea").eq(3).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[2].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[2] + "内容").val("");
+            sqItem.children().find("textarea").eq(4).attr("name", "SingleQuestions[" + sqSum + "].SingleOptions[3].OptionProperty").attr("placeholder", "在这里输入" + SingleAnswerId[3] + "内容").val("");
 
             sqItem.children().find("label").eq(1).text(SingleAnswerId[0]);
             sqItem.children().find("label").eq(2).text(SingleAnswerId[1]);
@@ -62,7 +62,7 @@
                 var moitem = $("#0mqchoice0").clone();
                 moitem.attr("id", mqposition + "mqchoice" + opnum);
                 moitem.children("label").text(MultipleAnswerId[opnum]);
-                moitem.children().find("textarea").attr("name", "MultipleQuestions[" + mqposition + "].MultipleOptions[" + opnum + "].OptionProperty");
+                moitem.children().find("textarea").attr("name", "MultipleQuestions[" + mqposition + "].MultipleOptions[" + opnum + "].OptionProperty").val("");
                 moitem.children().find("span").eq(0).attr("data-valmsg-for", "MultipleQuestions[" + mqposition + "].MultipleOptions[" + opnum + "].OptionProperty");
                 moitem.children().find("span").eq(1).attr("data-valmsg-for", "MultipleQuestions[" + mqposition + "].MultipleOptions[" + opnum + "].Answer");
                 moitem.children().find("input").attr("name", "MultipleQuestions[" + mqposition + "].MultipleOptions[" + opnum + "].Answer");
@@ -77,12 +77,12 @@
             var mqPanelItem = $("#createmopanel").clone(true);
             var mqSum = $(".multiple-question").size();     //得到目前所有多选题的数目
             var form = $("<div></div>").addClass("form-horizontal multiple-question").attr("id", mqSum + "mq").append($("<br>"));
-            mqContentItem.children().find("textarea").attr("name", "MultipleQuestions[" + mqSum + "].Content");
+            mqContentItem.children().find("textarea").attr("name", "MultipleQuestions[" + mqSum + "].Content").val("");
             mqContentItem.children().find("span").attr("data-valmsg-for", "MultipleQuestions[" + mqSum + "].Content");
             mqContentItem.removeAttr("id");
 
             mqChoiceItem.attr("id", mqSum + "mqchoice0");
-            mqChoiceItem.children().find("textarea").attr("name", "MultipleQuestions[" + mqSum + "].MultipleOptions[0].OptionProperty");
+            mqChoiceItem.children().find("textarea").attr("name", "MultipleQuestions[" + mqSum + "].MultipleOptions[0].OptionProperty").val("");
             mqChoiceItem.children().find("span").eq(0).attr("data-valmsg-for", "MultipleQuestions[" + mqSum + "].MultipleOptions[0].OptionProperty");
             mqChoiceItem.children().find("span").eq(1).attr("data-valmsg-for", "MultipleQuestions[" + mqSum + "].MultipleOptions[0].Answer");
             mqChoiceItem.children().find("input").attr("name", "MultipleQuestions[" + mqSum + "].MultipleOptions[0].Answer");

@@ -9,6 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Terrace.Models;
+using MvcContrib.Filters;
 
 namespace Terrace.Controllers
 {
@@ -19,13 +20,21 @@ namespace Terrace.Controllers
         {
             return View(db.Papers.OrderBy(p => p.Id).ToPagedList(page, 10));
         }
+
+        [ModelStateToTempData]
         public ActionResult Create()
         {
+            if(TempData["LastPostModel"] == null)
+            {
+                return View(TempData["LastPostModel"] as Paper);
+            }
             return View();
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ModelStateToTempData]
         public ActionResult Create([Bind(Include = "TrueOrFalseQuestions,SingleQuestions,MultipleQuestions")]Paper paper)
         {
             if (ModelState.IsValid)
@@ -75,7 +84,7 @@ namespace Terrace.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(paper);
+            return RedirectToAction("Create");
         }
 
         public ActionResult Edit(int? id)
