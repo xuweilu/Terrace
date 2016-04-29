@@ -106,7 +106,7 @@ namespace Terrace.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id,FormCollection formCollection)
+        public ActionResult Edit(int id , FormCollection formCollection)
         {
             //取得要修改的对象
             var newpaper = db.Papers
